@@ -3,7 +3,7 @@ $(document).ready(function () {
         $("#loader").show();
         $.ajax({
             url: 'https://smileschool-api.hbtn.info/quotes',
-            method: "get",
+            method: "GET",
             success: function(fetched) {
                 fetched.forEach(data => {     
                     carouselstat = '';
@@ -30,47 +30,50 @@ $(document).ready(function () {
         });
     }
 
-    // function popularTutorials {
-    //     $.ajax({
-    //         url: 'https://smileschool-api.hbtn.info/popular-tutorials',
-    //         method: "get",
-    //         success: function(fetched) {
-    //             fetched.forEach(data => {     
-    //                 carouselstat = '';
-    //                 if (data.id == 1) {
-    //                     carouselstat = 'active';
-    //                 }
-    //                 $stars = '';
-    //                 for(let i = 0; i < data.star; i++) {
-    //                     $stars += '<img src="images/star_on.png" width="20px">';
-    //                 }
-    //                 let content = $(`
-    //                 <div class="card mr-3 ${carouselstat}" style="width: 16rem;">
-    //                     <div class="d-flex align-items-center justify-content-center">
-    //                         <img src=${data.thumb_url} alt="" class="card-img-top">
-    //                         <img src="images/play.png" alt="" class="position-absolute w-25">
-    //                     </div>
-    //                     <div class="card-body">
-    //                         <h5 class="card-title font-weight-bold text-left">${data.title}</h5>
-    //                         <p class="card-text text-muted text-left">${data.sub-title}</p>
-    //                         <div class="d-flex align-items-center">
-    //                             <div class="mr-3">
-    //                                 <img src=${data.author_pic_url} alt="Phillip Massey" class="rounded-circle" width="50px" height="50px">
-    //                             </div>
-    //                             <p class="purple-learn font-weight-bold pt-3">${data.author}</p>
-    //                         </div>
-    //                         <div class="d-flex justify-content-between mt-3 align-items-center">
-    //                             ${$stars}
-    //                             <div class="purple-learn font-weight-bold">${data.duration}</div>
-    //                         </div>
-    //                     </div>
-    //                 </div>`);
-    //                 $("#tuto").append(content);
-    //             });
-    //         }
-    //     });
-    // }
+    function popularTutorials() {
+        $.ajax({
+            url: 'https://smileschool-api.hbtn.info/popular-tutorials',
+            method: "GET",
+            success: function(fetched) {
+                fetched.forEach(data => {     
+                    carouselstat = '';
+                    if (data.id == 1) {
+                        carouselstat = 'active';
+                    }
+                    stars = '';
+                    for(let i = 0; i < data.star; i++) {
+                        stars += '<img src="images/star_on.png" width="20px">';
+                    }
+                    for(let j = 0; j < 5 -data.star; j++) {
+                        stars += '<img src="images/star_off.png" width="20px">';
+                    }
+                    let content = $(`
+                        <div class="card mx-1 col-lg-3 col-md-4 col-sm-6">
+                            <div class="${carouselstat}">
+                                <img src=${data.thumb_url} alt="" class="card-img-top">
+                                <img src="images/play.png" alt="" class="position-absolute w-25">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title font-weight-bold text-left">${data.title}</h5>
+                                <p class="card-text text-muted text-left">${data["sub-title"]}</p>
+                                <div class="d-flex align-items-center">
+                                    <div class="mr-3">
+                                        <img src=${data.author_pic_url} alt="Phillip Massey" class="rounded-circle" width="50px" height="50px">
+                                    </div>
+                                    <p class="purple-learn font-weight-bold pt-3">${data.author}</p>
+                                </div>
+                                <div class="d-flex justify-content-between mt-3 align-items-center">
+                                    ${stars}
+                                    <div class="purple-learn font-weight-bold">${data.duration}</div>
+                                </div>
+                            </div>
+                        </div>`);
+                    $("#tuto").append(content);
+                });
+            }
+        });
+    }
 
     dynamicQuote();
-    // popularTutorials();
+    popularTutorials();
 });
